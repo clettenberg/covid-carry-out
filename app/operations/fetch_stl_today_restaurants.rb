@@ -51,15 +51,22 @@ class FetchStlTodayRestaurants
             end
           end
 
+          most_info = rst.css('li').each_with_object({}) do |li, obj|
+            key, value = li.inner_text.split(':').map(&:strip).map(&:downcase)
+            obj[key.gsub(' ', '_').to_sym] = value
+          end
+
+          info_to_save = {
+            name: name,
+            address: address,
+            website: website,
+            telephone: telephone,
+            county: county,
+            cuisine: cuisine
+          }.merge(most_info)
+
           begin
-            Restaurant.create!(
-              name: name,
-              address: address,
-              website: website,
-              telephone: telephone,
-              county: county,
-              cuisine: cuisine
-            )
+            Restaurant.create!(info_to_save)
           rescue ActiveRecord::RecordNotUnique
             Rails.logger.warn(
               """
