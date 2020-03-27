@@ -1,6 +1,9 @@
 {
   "name": "covid_carry_out",
   "private": true,
+  "scripts": {
+    "lint": "node_modules/.bin/standard"
+  },
   "dependencies": {
     "@babel/preset-react": "^7.9.4",
     "@rails/actioncable": "^6.0.0",
@@ -14,6 +17,7 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "standard": "^14.3.3",
     "webpack-dev-server": "^3.10.3"
   }
 }
