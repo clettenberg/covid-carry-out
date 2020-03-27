@@ -8,5 +8,4 @@ namespace :restaurants do
   task fetch_fresh: :environment do
     FetchStlTodayRestaurants.call(fresh: true)
   end
-
 end

@@ -1,7 +1,7 @@
-require 'open-uri'
+require "open-uri"
 
 class FetchStlTodayRestaurants
-  SCHEMES = %w(http https)
+  SCHEMES = %w[http https]
 
   def self.call(fresh: false)
     new.fetch!(fresh)
@@ -15,7 +15,7 @@ class FetchStlTodayRestaurants
     end
 
     url = "https://graphics.stltoday.com/apps/corona-restaurants/index.html"
-    doc = Nokogiri::HTML(URI.open(url), nil, 'utf-8')
+    doc = Nokogiri::HTML(URI.open(url), nil, "utf-8")
 
     doc.css(".county").each do |cty|
       county_name = cty.at_css("h2").inner_text.strip.downcase
@@ -50,10 +50,10 @@ class FetchStlTodayRestaurants
             end
           end
 
-          most_info = rst.css('li').each_with_object({}) do |li, obj|
-            key, value = li.inner_text.split(':').map(&:strip).map(&:downcase)
-            obj[key.gsub(' ', '_').to_sym] = value
-          end
+          most_info = rst.css("li").each_with_object({}) { |li, obj|
+            key, value = li.inner_text.split(":").map(&:strip).map(&:downcase)
+            obj[key.tr(" ", "_").to_sym] = value
+          }
 
           info_to_save = {
             name: name,

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe FetchStlTodayRestaurants, :vcr do
   let(:subject) { FetchStlTodayRestaurants.call }
@@ -22,12 +22,10 @@ RSpec.describe FetchStlTodayRestaurants, :vcr do
   context "on subsequent runs" do
     context "when fresh is false" do
       it "does not create new ones if they have not changed" do
-        expect{subject}.to_not change{ Restaurant.count }
-        expect{subject}.to_not change{ County.count }
-        expect{subject}.to_not change{ Cuisine.count }
+        expect { subject }.to_not change { Restaurant.count }
+        expect { subject }.to_not change { County.count }
+        expect { subject }.to_not change { Cuisine.count }
       end
     end
   end
-
-
 end
