@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "Restaurants", type: :request do
+RSpec.describe "Restaurants" do
 
-  describe "GET /index" do
+  xdescribe "GET /restaurants" do
     it "returns http success" do
-      get "/restaurants/index"
+      get "/restaurants"
       expect(response).to have_http_status(:success)
     end
   end

@@ -1,5 +1,4 @@
 require 'open-uri'
-require 'uri'
 
 class FetchStlTodayRestaurants
   SCHEMES = %w(http https)

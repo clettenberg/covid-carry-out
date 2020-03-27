@@ -1,4 +1,5 @@
-example_id                                                     | status | run_time     |
--------------------------------------------------------------- | ------ | ------------ |
-./spec/operations/fetch_stl_today_restaurants_spec.rb[1:1:1]   | passed | 1.64 seconds |
-./spec/operations/fetch_stl_today_restaurants_spec.rb[1:2:1:1] | failed | 1.52 seconds |
+example_id                                                     | status  | run_time        |
+-------------------------------------------------------------- | ------- | --------------- |
+./spec/operations/fetch_stl_today_restaurants_spec.rb[1:1:1]   | passed  | 2.74 seconds    |
+./spec/operations/fetch_stl_today_restaurants_spec.rb[1:2:1:1] | passed  | 2.1 seconds     |
+./spec/requests/restaurants_request_spec.rb[1:1:1]             | pending | 0.00002 seconds |
