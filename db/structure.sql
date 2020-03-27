@@ -114,7 +114,10 @@ CREATE TABLE public.restaurants (
     county_id bigint NOT NULL,
     cuisine_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    menu character varying,
+    service character varying,
+    special_deals text
 );
 
 
@@ -253,6 +256,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20200326023928'),
 ('20200326024145'),
-('20200326024215');
+('20200326024215'),
+('20200327014825');
 
 
