@@ -1,0 +1,10 @@
+<h1>Restaurants!</h1>
+
+<% if @restaurants.any? %>
+  <% @restaurants.each do |r| %>
+    <p><%= r.name %><p>
+  <% end %>
+<% else %>
+  <p>No Restaurants!</p>
+<% end %>
+

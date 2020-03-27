@@ -39,6 +39,68 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: counties; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.counties (
+    id bigint NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: counties_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.counties_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: counties_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.counties_id_seq OWNED BY public.counties.id;
+
+
+--
+-- Name: cuisines; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cuisines (
+    id bigint NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: cuisines_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.cuisines_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cuisines_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.cuisines_id_seq OWNED BY public.cuisines.id;
+
+
+--
 -- Name: restaurants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -48,6 +110,9 @@ CREATE TABLE public.restaurants (
     address character varying,
     website character varying,
     hours character varying,
+    telephone character varying,
+    county_id bigint NOT NULL,
+    cuisine_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -82,6 +147,20 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: counties id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.counties ALTER COLUMN id SET DEFAULT nextval('public.counties_id_seq'::regclass);
+
+
+--
+-- Name: cuisines id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cuisines ALTER COLUMN id SET DEFAULT nextval('public.cuisines_id_seq'::regclass);
+
+
+--
 -- Name: restaurants id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -94,6 +173,22 @@ ALTER TABLE ONLY public.restaurants ALTER COLUMN id SET DEFAULT nextval('public.
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: counties counties_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.counties
+    ADD CONSTRAINT counties_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cuisines cuisines_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cuisines
+    ADD CONSTRAINT cuisines_pkey PRIMARY KEY (id);
 
 
 --
@@ -113,12 +208,51 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: index_restaurants_on_county_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_restaurants_on_county_id ON public.restaurants USING btree (county_id);
+
+
+--
+-- Name: index_restaurants_on_county_id_and_cuisine_id_and_address; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_restaurants_on_county_id_and_cuisine_id_and_address ON public.restaurants USING btree (county_id, cuisine_id, address);
+
+
+--
+-- Name: index_restaurants_on_cuisine_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_restaurants_on_cuisine_id ON public.restaurants USING btree (cuisine_id);
+
+
+--
+-- Name: restaurants fk_rails_1b57f0ba80; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.restaurants
+    ADD CONSTRAINT fk_rails_1b57f0ba80 FOREIGN KEY (county_id) REFERENCES public.counties(id);
+
+
+--
+-- Name: restaurants fk_rails_9f6ec62354; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.restaurants
+    ADD CONSTRAINT fk_rails_9f6ec62354 FOREIGN KEY (cuisine_id) REFERENCES public.cuisines(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20200326004321');
+('20200326023928'),
+('20200326024145'),
+('20200326024215');
 
 
