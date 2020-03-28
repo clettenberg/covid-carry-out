@@ -5,7 +5,7 @@ namespace :restaurants do
   end
 
   desc "fetch fresh restaurants"
-  task fetch_fresh: :environment do
+  task "fetch:fresh": :environment do
     FetchStlTodayRestaurants.call(fresh: true)
   end
 end
