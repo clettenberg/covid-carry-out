@@ -1,6 +1,6 @@
 import { fetch } from 'whatwg-fetch'
 import React, { Component } from 'react'
-import { Container, CardColumns, Card } from 'react-bootstrap'
+import { CardColumns, Card } from 'react-bootstrap'
 
 class Restaurants extends Component {
   constructor (props) {

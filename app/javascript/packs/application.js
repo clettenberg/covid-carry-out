@@ -3,7 +3,6 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/application.scss'
 
 require('@rails/ujs').start()
