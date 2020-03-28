@@ -51,7 +51,7 @@ class FetchStlTodayRestaurants
           end
 
           most_info = rst.css("li").each_with_object({}) { |li, obj|
-            key, value = li.inner_text.split(":").map(&:strip).map(&:downcase)
+            key, value = li.inner_text.split(":", 2).map(&:strip).map(&:downcase)
             obj[key.tr(" ", "_").to_sym] = value
           }
 
