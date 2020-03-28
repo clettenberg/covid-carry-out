@@ -1,15 +1,18 @@
 import { fetch } from 'whatwg-fetch'
 import React from 'react'
 import Restaurants from './Restaurants'
-import { Navbar } from 'react-bootstrap'
+import { Navbar, Form } from 'react-bootstrap'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
 
+    this.handleCountyChange = this.handleCountyChange.bind(this)
+
     this.state = {
       restaurants: [],
-      err: []
+      err: [],
+      countyId: -1
     }
   }
 
@@ -23,6 +26,11 @@ class App extends React.Component {
       })
   }
 
+  handleCountyChange (e) {
+    const countyId = parseInt(e.target.value)
+    this.setState({ countyId })
+  }
+
   componentDidMount () {
     this.fetchRestaurants()
       .then(restaurants => {
@@ -32,8 +40,12 @@ class App extends React.Component {
 
   render () {
     const {
-      restaurants
+      restaurants,
+      countyId
     } = this.state
+
+    const countiesMap = new Map()
+    restaurants.forEach(r => countiesMap.set(r.county.id, r.county.name))
 
     return (
       <>
@@ -41,7 +53,13 @@ class App extends React.Component {
           <Navbar.Brand href='#home'>Covid Carry Out - STL</Navbar.Brand>
         </Navbar>
         <div style={{ marginTop: '20px' }} className='container'>
-          <Restaurants restaurants={restaurants} />
+          <Form.Control as='select' onChange={this.handleCountyChange}>
+            <option value='-1'>All</option>
+            {[...countiesMap].map(([key, value]) => (
+              <option key={key} value={key}>{value}</option>
+            ))}
+          </Form.Control>
+          <Restaurants restaurants={restaurants} countyId={countyId} />
         </div>
       </>
     )
