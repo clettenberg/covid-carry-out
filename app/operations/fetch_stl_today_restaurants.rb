@@ -9,14 +9,15 @@ class FetchStlTodayRestaurants
 
   def fetch!(fresh)
     if fresh
-      Restaurant.delete_all
-      County.delete_all
-      Cuisine.delete_all
+      [Restaurant, County, Cuisine].each do |record|
+        puts "===== Deleting #{record} ====="
+        record.delete_all
+      end
     end
 
     url = "https://graphics.stltoday.com/apps/corona-restaurants/index.html"
     doc = Nokogiri::HTML(URI.open(url), nil, "utf-8")
-
+    puts "===== Create Restaurants ====="
     doc.css(".county").each do |cty|
       county_name = cty.at_css("h2").inner_text.strip.downcase
       county = County.find_or_create_by(name: county_name)
@@ -24,7 +25,6 @@ class FetchStlTodayRestaurants
       cty.css(".cuisine").each do |cui|
         cuisine_name = cui.at_css("h3").inner_text.strip.downcase
         cuisine = Cuisine.find_or_create_by(name: cuisine_name)
-
         telephone = nil
         website = nil
         address = nil
