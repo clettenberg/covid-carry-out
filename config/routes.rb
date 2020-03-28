@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
-  root to: "restaurants#index"
-  resources :restaurants, only: [:index]
+  root to: "home#index"
+
+  scope "api" do
+    resources :restaurants, only: [:index], controller: "api/restaurants"
+  end
 end
