@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>CovidCarryOut</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= javascript_pack_tag 'application' %>
-    <%= javascript_pack_tag 'server_rendering' %>
-  </head>
+<head>
+  <title>CovidCarryOut</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_pack_tag 'application'%>
 
-  <body>
-    <%= yield %>
-  </body>
+  <%= javascript_pack_tag 'application' %>
+  <%= javascript_pack_tag 'server_rendering' %>
+</head>
+
+<body>
+  <%= yield %>
+</body>
+
 </html>
