@@ -1,7 +1,9 @@
 import { fetch } from 'whatwg-fetch'
 import React from 'react'
 import Restaurants from './Restaurants'
-import { Navbar, Form, Container } from 'react-bootstrap'
+import Navbar from 'react-bootstrap/Navbar'
+import Form from 'react-bootstrap/Form'
+import Container from 'react-bootstrap/Container'
 import Spinner from './Spinner'
 class App extends React.Component {
   constructor (props) {

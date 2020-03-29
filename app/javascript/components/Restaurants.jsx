@@ -1,5 +1,6 @@
 import React from 'react'
-import { CardColumns, Card } from 'react-bootstrap'
+import CardColumns from 'react-bootstrap/CardColumns'
+import Card from 'react-bootstrap/Card'
 import { FaLink, FaPhone, FaMapMarkedAlt } from 'react-icons/fa'
 
 const duckDuckGoMapSearchUrl = (name, address) => {
