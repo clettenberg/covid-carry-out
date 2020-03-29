@@ -3,8 +3,8 @@ class Api::RestaurantsController < ApplicationController
     restaurants = Restaurant.all
     presenter = PluckMap[Restaurant].define do
       id
-      name select: %i[ name ], map: ->(name) { name.titleize }
-      website select: %i[ website ], map: ->(website) do
+      name map: ->(name) { name.titleize }
+      website map: ->(website) do
         begin
           return "http://#{website}" if URI.parse(website).relative?
           website
@@ -12,15 +12,20 @@ class Api::RestaurantsController < ApplicationController
           website
         end
       end
+      address map: ->(address) { address.titleize }
+      hours
+      telephone
+      service map: ->(service) { service.capitalize }
+      special_deals as: "specialDeals"
 
       has_one :county do
         id
-        name select: %i[ name ], map: ->(name) { name.titleize }
+        name map: ->(name) { name.titleize }
       end
 
       has_one :cuisine do
         id
-        name select: %i[ name ], map: ->(name) { name.titleize }
+        name map: ->(name) { name.titleize }
       end
     end
 
