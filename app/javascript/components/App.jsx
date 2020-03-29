@@ -1,8 +1,8 @@
 import { fetch } from 'whatwg-fetch'
 import React from 'react'
 import Restaurants from './Restaurants'
-import { Navbar, Form } from 'react-bootstrap'
-
+import { Navbar, Form, Container } from 'react-bootstrap'
+import Spinner from './Spinner'
 class App extends React.Component {
   constructor (props) {
     super(props)
@@ -12,7 +12,8 @@ class App extends React.Component {
     this.state = {
       restaurants: [],
       err: [],
-      countyId: -1
+      countyId: -1,
+      hasFetchedRestaurants: false
     }
   }
 
@@ -34,14 +35,45 @@ class App extends React.Component {
   componentDidMount () {
     this.fetchRestaurants()
       .then(restaurants => {
-        this.setState({ restaurants })
+        this.setState({
+          restaurants,
+          hasFetchedRestaurants: true
+        })
       })
+  }
+
+  countySelect (countiesMap) {
+    return (
+      <Form.Group>
+        <Form.Control as='select' onChange={this.handleCountyChange}>
+          <option value='-1'>All</option>
+          {[...countiesMap].map(([key, value]) => (
+            <option key={key} value={key}>{value}</option>
+          ))}
+        </Form.Control>
+      </Form.Group>
+    )
+  }
+
+  spinner () {
+    return (
+      <div
+        style={{
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '80px'
+        }}
+      >
+        <Spinner />
+      </div>
+    )
   }
 
   render () {
     const {
       restaurants,
-      countyId
+      countyId,
+      hasFetchedRestaurants
     } = this.state
 
     const countiesMap = new Map()
@@ -52,15 +84,13 @@ class App extends React.Component {
         <Navbar bg='light'>
           <Navbar.Brand href='#home'>Covid Carry Out - STL</Navbar.Brand>
         </Navbar>
-        <div style={{ marginTop: '20px' }} className='container'>
-          <Form.Control as='select' onChange={this.handleCountyChange}>
-            <option value='-1'>All</option>
-            {[...countiesMap].map(([key, value]) => (
-              <option key={key} value={key}>{value}</option>
-            ))}
-          </Form.Control>
+        <Container style={{ marginTop: '20px' }}>
+          {hasFetchedRestaurants
+            ? this.countySelect(countiesMap)
+            : this.spinner()}
+
           <Restaurants restaurants={restaurants} countyId={countyId} />
-        </div>
+        </Container>
       </>
     )
   }
