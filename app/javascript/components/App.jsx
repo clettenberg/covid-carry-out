@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container'
 import Spinner from './Spinner'
 import CountySelect from './CountySelect'
 import CuisineSelect from './CuisineSelect'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 class App extends React.Component {
   constructor (props) {
     super(props)
@@ -107,8 +108,26 @@ class App extends React.Component {
 
     return (
       <>
-        <Navbar bg='light'>
-          <Navbar.Brand href='#home'>Covid Carry Out - STL</Navbar.Brand>
+        <Navbar bg='light' className='justify-content-between'>
+          <Navbar.Brand>
+            {'covid carry out'.toUpperCase()}
+            <a
+              className='text-muted'
+              target='_blank'
+              rel='noopener noreferrer'
+              style={{ fontSize: '.8rem', display: 'block' }}
+              href='https://www.stltoday.com/entertainment/dining/restaurants/takeout-and-delivery-options-at-st-louis-area-restaurants/html_fc41d5c6-d9ec-5031-858b-0236b6deb60b.html'
+            >
+              data from st. louis post-dispatch
+              <FaExternalLinkAlt
+                style={{ size: '.8rem', position: 'relative', top: '-1.5px', marginLeft: '2px' }}
+              />
+            </a>
+          </Navbar.Brand>
+
+          <Navbar.Text>
+
+          </Navbar.Text>
         </Navbar>
         <Container style={{ marginTop: '20px' }}>
           <CountySelect

@@ -30,15 +30,15 @@ const Restaurants = ({ restaurants, countyId, cuisineId }) => (
                 <Badge variant='info' className='mr-1'>Family Meals</Badge>}
             </div>
             {website &&
-              <Card.Link href={website} target='_blank'>
+              <Card.Link href={website} target='_blank' rel='noopener noreferrer'>
                 <FaLink />
               </Card.Link>}
             {telephone &&
-              <Card.Link href={`tel:${telephone}`} target='_blank'>
+              <Card.Link href={`tel:${telephone}`} target='_blank' rel='noopener noreferrer'>
                 <FaPhone />
               </Card.Link>}
             {name && address &&
-              <Card.Link href={duckDuckGoMapSearchUrl(name, address)} target='_blank'>
+              <Card.Link href={duckDuckGoMapSearchUrl(name, address)} target='_blank' rel='noopener noreferrer'>
                 <FaMapMarkedAlt />
               </Card.Link>}
           </Card.Subtitle>
