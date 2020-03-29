@@ -13,10 +13,11 @@ class Api::RestaurantsController < ApplicationController
         end
       end
       address map: ->(address) { address.titleize }
-      hours
+      hours map: ->(hours) { hours.capitalize }
+      menu as: "menus", map: ->(menu) { menu.split(',').map(&:strip) }
       telephone
-      service map: ->(service) { service.capitalize }
-      special_deals as: "specialDeals"
+      service as: "services", map: ->(service) { service.split(',').map(&:strip).map(&:titleize) }
+      special_deals as: "specialDeals", map: ->(special_deals) { special_deals&.capitalize }
 
       has_one :county do
         id
