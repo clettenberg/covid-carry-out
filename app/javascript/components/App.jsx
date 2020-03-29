@@ -2,19 +2,22 @@ import { fetch } from 'whatwg-fetch'
 import React from 'react'
 import Restaurants from './Restaurants'
 import Navbar from 'react-bootstrap/Navbar'
-import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
 import Spinner from './Spinner'
+import CountySelect from './CountySelect'
+import CuisineSelect from './CuisineSelect'
 class App extends React.Component {
   constructor (props) {
     super(props)
 
     this.handleCountyChange = this.handleCountyChange.bind(this)
+    this.handleCuisineChange = this.handleCuisineChange.bind(this)
 
     this.state = {
       restaurants: [],
       err: [],
       countyId: -1,
+      cuisineId: -1,
       hasFetchedRestaurants: false
     }
   }
@@ -31,7 +34,12 @@ class App extends React.Component {
 
   handleCountyChange (e) {
     const countyId = parseInt(e.target.value)
-    this.setState({ countyId })
+    this.setState({ countyId, cuisineId: -1 })
+  }
+
+  handleCuisineChange (e) {
+    const cuisineId = parseInt(e.target.value)
+    this.setState({ cuisineId })
   }
 
   componentDidMount () {
@@ -44,23 +52,11 @@ class App extends React.Component {
       })
   }
 
-  countySelect (countiesMap) {
-    return (
-      <Form.Group>
-        <Form.Control as='select' onChange={this.handleCountyChange}>
-          <option value='-1'>All</option>
-          {[...countiesMap].map(([key, value]) => (
-            <option key={key} value={key}>{value}</option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-    )
-  }
-
   spinner () {
     return (
       <div
         style={{
+          marginTop: '30px',
           marginLeft: 'auto',
           marginRight: 'auto',
           width: '80px'
@@ -71,15 +67,43 @@ class App extends React.Component {
     )
   }
 
+  generateIdNameMap ({ things, name }) {
+    const mapOfThings = new Map()
+    things.forEach(r => {
+      mapOfThings.set(r[name].id, r[name].name)
+    })
+    return mapOfThings
+  }
+
   render () {
     const {
       restaurants,
       countyId,
+      cuisineId,
       hasFetchedRestaurants
     } = this.state
 
-    const countiesMap = new Map()
-    restaurants.forEach(r => countiesMap.set(r.county.id, r.county.name))
+    if (!hasFetchedRestaurants) {
+      return this.spinner()
+    }
+
+    const countiesMap = this.generateIdNameMap({ things: restaurants, name: 'county' })
+
+    const resFilteredByCounty = restaurants
+      .filter(({ county }) => {
+        if (countyId === -1) { return true }
+
+        return countyId === parseInt(county.id)
+      })
+
+    const cuisinesMap = this.generateIdNameMap({ things: resFilteredByCounty, name: 'cuisine' })
+
+    const resFilteredByCountyAndCuisine =
+      resFilteredByCounty.filter(({ cuisine }) => {
+        if (cuisineId === -1) { return true }
+
+        return cuisineId === parseInt(cuisine.id)
+      })
 
     return (
       <>
@@ -87,11 +111,21 @@ class App extends React.Component {
           <Navbar.Brand href='#home'>Covid Carry Out - STL</Navbar.Brand>
         </Navbar>
         <Container style={{ marginTop: '20px' }}>
-          {hasFetchedRestaurants
-            ? this.countySelect(countiesMap)
-            : this.spinner()}
-
-          <Restaurants restaurants={restaurants} countyId={countyId} />
+          <CountySelect
+            onChange={this.handleCountyChange}
+            counties={[...countiesMap]}
+            countyId={countyId}
+          />
+          <CuisineSelect
+            onChange={this.handleCuisineChange}
+            cuisines={[...cuisinesMap]}
+            cuisineId={cuisineId}
+          />
+          <Restaurants
+            restaurants={resFilteredByCountyAndCuisine}
+            countyId={countyId}
+            cuisineId={cuisineId}
+          />
         </Container>
       </>
     )
