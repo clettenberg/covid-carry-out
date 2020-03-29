@@ -7,6 +7,32 @@ import Spinner from './Spinner'
 import CountySelect from './CountySelect'
 import CuisineSelect from './CuisineSelect'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+
+const sortAlphabetically = ({ name: nameA }, { name: nameB }) => {
+  nameA = nameA.toUpperCase()
+  nameB = nameB.toUpperCase()
+  if (nameA < nameB) {
+    return -1
+  }
+  if (nameA > nameB) {
+    return 1
+  }
+
+  return 0
+}
+
+const SpinnerWrapper = () => (
+  <div
+    style={{
+      marginTop: '30px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: '80px'
+    }}
+  >
+    <Spinner />
+  </div>
+)
 class App extends React.Component {
   constructor (props) {
     super(props)
@@ -53,21 +79,6 @@ class App extends React.Component {
       })
   }
 
-  spinner () {
-    return (
-      <div
-        style={{
-          marginTop: '30px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          width: '80px'
-        }}
-      >
-        <Spinner />
-      </div>
-    )
-  }
-
   generateIdNameMap ({ things, name }) {
     const mapOfThings = new Map()
     things.forEach(r => {
@@ -85,7 +96,7 @@ class App extends React.Component {
     } = this.state
 
     if (!hasFetchedRestaurants) {
-      return this.spinner()
+      return <SpinnerWrapper />
     }
 
     const countiesMap = this.generateIdNameMap({ things: restaurants, name: 'county' })
@@ -141,7 +152,7 @@ class App extends React.Component {
             cuisineId={cuisineId}
           />
           <Restaurants
-            restaurants={resFilteredByCountyAndCuisine}
+            restaurants={resFilteredByCountyAndCuisine.sort(sortAlphabetically)}
             countyId={countyId}
             cuisineId={cuisineId}
           />
