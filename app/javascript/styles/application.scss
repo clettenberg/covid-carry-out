@@ -1,1 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
+
+
+html,body {
+  font-family: 'Alata', sans-serif;
+}
+
+@import './spinner.scss'
