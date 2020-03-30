@@ -7,6 +7,6 @@ class HomeController < ApplicationController
       .pluck(:created_at)
       .first)
 
-    render component: 'App', props: {updatedAt: last_updated}
+    render component: "App", props: {updatedAt: last_updated}
   end
 end

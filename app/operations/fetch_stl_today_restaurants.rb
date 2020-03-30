@@ -11,7 +11,6 @@ class FetchStlTodayRestaurants
     url = "https://graphics.stltoday.com/apps/corona-restaurants/index.html"
     doc = Nokogiri::HTML(URI.open(url), nil, "utf-8")
 
-
     [Restaurant, County, Cuisine].each do |record|
       puts "===== Deleting #{record} ====="
       record.delete_all

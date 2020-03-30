@@ -1,22 +1,22 @@
 class Api::RestaurantsController < ApplicationController
   def index
     restaurants = Restaurant.all
-    presenter = PluckMap[Restaurant].define do
+    presenter = PluckMap[Restaurant].define {
       id
       name map: ->(name) { name.titleize }
       website map: ->(website) do
         begin
           return "http://#{website}" if URI.parse(website).relative?
           website
-        rescue URI::InvalidURIError => exception
+        rescue URI::InvalidURIError
           website
         end
       end
       address map: ->(address) { address.titleize }
       hours map: ->(hours) { hours.capitalize }
-      menu as: "menus", map: ->(menu) { menu.split(',').map(&:strip) }
+      menu as: "menus", map: ->(menu) { menu.split(",").map(&:strip) }
       telephone
-      service as: "services", map: ->(service) { service.split(',').map(&:strip).map(&:titleize) }
+      service as: "services", map: ->(service) { service.split(",").map(&:strip).map(&:titleize) }
       special_deals as: "specialDeals", map: ->(special_deals) { special_deals&.capitalize }
 
       has_one :county do
@@ -28,7 +28,7 @@ class Api::RestaurantsController < ApplicationController
         id
         name map: ->(name) { name.titleize }
       end
-    end
+    }
 
     render json: presenter.to_h(restaurants)
   end
