@@ -136,8 +136,8 @@ class App extends React.Component {
             </a>
           </Navbar.Brand>
 
-          <Navbar.Text>
-
+          <Navbar.Text style={{ fontSize: '.7rem' }}>
+            {`updated ${this.props.updatedAt} ago`}
           </Navbar.Text>
         </Navbar>
         <Container style={{ marginTop: '20px' }}>
