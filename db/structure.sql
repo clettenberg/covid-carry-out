@@ -45,8 +45,8 @@ CREATE TABLE public.ar_internal_metadata (
 CREATE TABLE public.counties (
     id bigint NOT NULL,
     name character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp(6) without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -76,8 +76,8 @@ ALTER SEQUENCE public.counties_id_seq OWNED BY public.counties.id;
 CREATE TABLE public.cuisines (
     id bigint NOT NULL,
     name character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp(6) without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -101,6 +101,37 @@ ALTER SEQUENCE public.cuisines_id_seq OWNED BY public.cuisines.id;
 
 
 --
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    event_type character varying,
+    created_at timestamp(6) without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp(6) without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+
+
+--
 -- Name: restaurants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -113,8 +144,8 @@ CREATE TABLE public.restaurants (
     telephone character varying,
     county_id bigint NOT NULL,
     cuisine_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp(6) without time zone DEFAULT now() NOT NULL,
     menu character varying,
     service character varying,
     special_deals text
@@ -164,6 +195,13 @@ ALTER TABLE ONLY public.cuisines ALTER COLUMN id SET DEFAULT nextval('public.cui
 
 
 --
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
 -- Name: restaurants id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -195,6 +233,14 @@ ALTER TABLE ONLY public.cuisines
 
 
 --
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: restaurants restaurants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -215,13 +261,6 @@ ALTER TABLE ONLY public.schema_migrations
 --
 
 CREATE INDEX index_restaurants_on_county_id ON public.restaurants USING btree (county_id);
-
-
---
--- Name: index_restaurants_on_county_id_and_cuisine_id_and_address; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_restaurants_on_county_id_and_cuisine_id_and_address ON public.restaurants USING btree (county_id, cuisine_id, address);
 
 
 --
@@ -257,6 +296,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200326023928'),
 ('20200326024145'),
 ('20200326024215'),
-('20200327014825');
+('20200327014825'),
+('20200330000739'),
+('20200330003934'),
+('20200330005436');
 
 
